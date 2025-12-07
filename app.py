@@ -1,6 +1,6 @@
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, VerticalScroll
-from textual.widgets import Static , Footer
+from textual.widgets import Static , Footer , DataTable
 from textual.theme import Theme
 from rich.text import Text
 
@@ -44,6 +44,15 @@ arctic_theme = Theme(
     },
 )
 
+# Dummy data for dev
+DUMMY_TRACKS = [
+    (1, "The Rolling Stones", "Paint It, Black", "Aftermath", 222),
+    (2, "Queen", "Bohemian Rhapsody", "A Night at the Opera", 354),
+    (3, "Daft Punk", "Get Lucky", "Random Access Memories", 276),
+    (4, "Fleetwood Mac", "Dreams", "Rumours", 257),
+    (5, "Tame Impala", "The Less I Know The Better The Less I Know The Better The Less I Know The Better The Less I Know The Better", "Currents", 217),
+]
+
 class EchoVault(App):
     CSS_PATH = "app.tcss"
     
@@ -51,8 +60,7 @@ class EchoVault(App):
         with Container(id="app-grid"):
             # for displaying tracks
             with VerticalScroll(id="left-pane"):
-                for number in range(15):
-                    yield Static(f"Track {number}")
+                yield DataTable(id="track-table",show_cursor=True)
             # app name        
             with Horizontal(id="top-right"):
                 ECHO_ASCII = Text(
@@ -76,11 +84,69 @@ class EchoVault(App):
                 yield Static("Total Duration")
                 yield Static("Listening Time", id="bottom-right-final")
         yield Footer()
+    
+    # will be replaced by db call
+    def load_track_data(self) -> None:
+        table = self.query_one("#track-table", DataTable)
+        
+        table.add_columns("ID", "Artist", "Title", "Album", "Time")
+        
+        for track_id, artist, title, album, duration_seconds in DUMMY_TRACKS:
+            minutes = int(duration_seconds // 60)
+            seconds = int(duration_seconds % 60)
+            formatted_duration = f"{minutes:02}:{seconds:02}"
+            
+            table.add_row(
+                track_id, artist, title, album, formatted_duration, 
+                key=f"track-{track_id}"
+            )
+            
+    def load_stats(self) -> None:
+        total_tracks = len(DUMMY_TRACKS)
+        unique_artists = len({artist for _, artist, *_ in DUMMY_TRACKS})
+
+        # compute total duration
+        total_seconds = sum(t[-1] for t in DUMMY_TRACKS)
+        minutes = total_seconds // 60
+        seconds = total_seconds % 60
+        total_duration = f"{minutes:02}:{seconds:02}"
+
+        # dummy values
+        liked_songs = 12
+        storage_used = "413 MB"
+        folders = 8
+        listening_time = "3h 12m"
+
+        stats = {
+            "Total Tracks": total_tracks,
+            "Artists": unique_artists,
+            "Liked Songs": liked_songs,
+            "Storage Used": storage_used,
+            "Folders": folders,
+            "Total Duration": total_duration,
+            "Listening Time": listening_time,
+        }
+
+        # get Static widgets under bottom-right
+        bottom_widgets = self.query("#bottom-right > Static")
+
+        for static in bottom_widgets:
+            label_text = static.render().plain.strip()
+
+            if label_text in stats:
+                value = stats[label_text]
+                static.update(f"{label_text}: [b]{value}[/b]")
+
+
         
     def on_mount(self) -> None:
         self.register_theme(arctic_theme) 
         self.register_theme(dracula_theme)
         self.theme = "arctic"
+        
+        # load tracks
+        self.load_track_data()
+        self.load_stats()
         
 if __name__ == "__main__":
     app = EchoVault()

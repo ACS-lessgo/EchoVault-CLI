@@ -63,3 +63,15 @@
     height: 100%;
     background: $boost;
 }
+
+#track-table {
+    width: 100%;
+    height: 100%;
+    background: $background;
+}
+
+.data-table--header {
+    background: $panel;
+    color: $foreground;
+    text-style: bold;
+}
