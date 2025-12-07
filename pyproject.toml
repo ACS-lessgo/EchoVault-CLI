@@ -57,6 +57,3 @@ include = ["src", "README.md", "LICENSE.txt"]
 
 [project.scripts]
 echovault = "echovault.app:main"
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/echovault"]
