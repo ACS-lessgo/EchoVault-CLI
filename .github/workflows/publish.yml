@@ -14,11 +14,9 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -28,9 +26,15 @@ jobs:
       - name: Build package
         run: |
           cd echovault
+          rm -rf dist
           hatch build
+
+      - name: Show dist for debugging
+        run: |
+          echo "=== DIST CONTENTS ==="
+          ls -l echovault/dist
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
-          packages-dir: echovault/dist  # <-- ABSOLUTE PATH FROM REPO ROOT
+          packages-dir: echovault/dist
