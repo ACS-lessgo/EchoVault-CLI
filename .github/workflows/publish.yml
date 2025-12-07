@@ -12,18 +12,52 @@ permissions:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Debug: Show commit + repo root
+        run: |
+          echo "=== COMMIT ==="
+          git rev-parse HEAD
+          echo
+          echo "=== ROOT FILES ==="
+          ls -R .
+
+      - name: Debug: Show pyproject + version file
+        run: |
+          echo "=== pyproject.toml (first 200 lines) ==="
+          sed -n '1,200p' pyproject.toml
+          echo
+          echo "=== __about__.py ==="
+          sed -n '1,50p' src/echovault/__about__.py
+          echo
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install Hatch
         run: pip install hatch
 
-      - name: Build
-        run: hatch build
+      - name: Build package
+        run: |
+          echo "=== Running hatch build ==="
+          hatch build
+          echo
+          echo "=== DIST CONTENTS AFTER BUILD ==="
+          ls -l dist/
+
+      - name: Show METADATA inside wheel
+        run: |
+          echo "=== CHECKING WHEEL METADATA ==="
+          for f in dist/*.whl; do
+            echo "--- $f ---"
+            unzip -p "$f" "*/*.dist-info/METADATA" | sed -n '1,80p'
+            echo
+          done
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.8.11
