@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug: Show commit + repo root
+      - name: Show commit + repo root
         run: |
           echo "=== COMMIT ==="
           git rev-parse HEAD
@@ -25,7 +25,7 @@ jobs:
           echo "=== ROOT FILES ==="
           ls -R .
 
-      - name: Debug: Show pyproject + version file
+      - name: Show pyproject + version file
         run: |
           echo "=== pyproject.toml (first 200 lines) ==="
           sed -n '1,200p' pyproject.toml
