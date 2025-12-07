@@ -3,7 +3,7 @@ name: Publish Python Package
 on:
   push:
     tags:
-      - "v*"     
+      - "v*"
 
 jobs:
   build-and-publish:
@@ -12,10 +12,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-
-    defaults:
-      run:
-        working-directory: ./echovault
 
     steps:
       - name: Checkout repository
@@ -30,9 +26,11 @@ jobs:
         run: pip install hatch
 
       - name: Build package
-        run: hatch build
+        run: |
+          cd echovault
+          hatch build
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
-          packages-dir: dist
+          packages-dir: echovault/dist
