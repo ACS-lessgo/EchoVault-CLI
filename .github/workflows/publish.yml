@@ -33,4 +33,4 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
-          packages-dir: echovault/dist
+          packages-dir: echovault/dist  # <-- ABSOLUTE PATH FROM REPO ROOT
