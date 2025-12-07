@@ -23,13 +23,14 @@ jobs:
       - name: Install Hatch
         run: pip install hatch
 
-      - name: Upgrade pkginfo (fix Metadata-Version 2.4 error)
-        run: pip install --upgrade pkginfo
+      # Removed the ineffective pkginfo upgrade step
 
       - name: Build package
-        run: hatch build
+        # Run from the root directory to find pyproject.toml
+        run: hatch build 
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.8.11
+        # Use the latest stable version of the action to fix metadata reading errors
+        uses: pypa/gh-action-pypi-publish@release/v1 
         with:
           packages-dir: dist
