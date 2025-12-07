@@ -54,3 +54,6 @@ include = ["src"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src", "README.md", "LICENSE.txt"]
+
+[project.scripts]
+echovault = "echovault.app:main"
