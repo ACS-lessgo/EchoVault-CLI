@@ -13,7 +13,7 @@
 ## Installation
 
 ```console
-pip install echovault
+pip install EchoVault-CLI
 ```
 
 ## License
