@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "echovault"
+dynamic = ["version"]
+description = 'EchoVault-CLI connector for EchoVault'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [{ name = "ACS-lessgo", email = "royalcs379@gmail.com" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["textual>=0.50.0", "pygame>=2.5.2"]
+
+[project.urls]
+Documentation = "https://github.com/ACS-lessgo/EchoVault-CLI#readme"
+Issues = "https://github.com/ACS-lessgo/EchoVault-CLI/issues"
+Source = "https://github.com/ACS-lessgo/EchoVault-CLI"
+
+[tool.hatch.version]
+path = "src/echovault/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = ["mypy>=1.0.0"]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/echovault tests}"
+
+[tool.coverage.run]
+source_pkgs = ["echovault", "tests"]
+branch = true
+parallel = true
+omit = ["src/echovault/__about__.py"]
+
+[tool.coverage.paths]
+echovault = ["src/echovault", "*/echovault/src/echovault"]
+tests = ["tests", "*/echovault/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+include = ["src"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "README.md", "LICENSE.txt"]

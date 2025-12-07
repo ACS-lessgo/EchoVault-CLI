@@ -423,6 +423,10 @@ class EchoVault(App):
         self.load_track_data()
         self.load_stats()
         
-if __name__ == "__main__":
+def main():
+    # entry point function for Hatch
     app = EchoVault()
     app.run()
+    
+if __name__ == "__main__":
+    main()
