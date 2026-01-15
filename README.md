@@ -18,8 +18,9 @@ pip install EchoVault-CLI
 
 ## CLI Preview
 
-![EchoVault CLI theme 1](Screenshots/cli1.png)
-![EchoVault CLI theme 2](Screenshots/cli2.png)
+- ![EchoVault CLI theme 1](Screenshots/cli1.png)
+
+- ![EchoVault CLI theme 2](Screenshots/cli2.png)
 
 ## License
 
