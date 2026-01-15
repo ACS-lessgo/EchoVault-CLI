@@ -16,6 +16,11 @@
 pip install EchoVault-CLI
 ```
 
+## CLI Preview
+
+![EchoVault CLI theme 1](screenshots/cli1.png)
+![EchoVault CLI theme 2](screenshots/cli2.png)
+
 ## License
 
 `echovault` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
